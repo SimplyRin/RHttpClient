@@ -59,6 +59,10 @@ public class RHttpClient {
 		return null;
 	}
 
+	public static void setShowLog(boolean showLog) {
+		RHttpClient.showLog = showLog;
+	}
+
 	public static void setShowTime(boolean showTime) {
 		RHttpClient.showTime = showTime;
 	}
