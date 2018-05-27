@@ -39,7 +39,8 @@ RHttpClient.raw("https://api.simplyrin.net/hello.txt")
     <dependency>
       <groupId>net.simplyrin.httpclient</groupId>
       <artifactId>RHttpClient</artifactId>
-      <version>1.1-SNAPSHOT</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
   </dependencies>
 ```
+`1.2-SNAPSHOT` で動作がおかしい場合は `1.1-SNAPSHOT` を使用してください。
