@@ -1,7 +1,7 @@
 # RHttpClient
 動作確認はしてますがおかしいところがありそうな HttpClient です。
 
-Maven にも置いてます。
+Maven にも置いてます。 (Repository はページ一番下)
 
 # Usage
 ```Java
