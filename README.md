@@ -3,6 +3,24 @@
 
 Maven にも置いてます。
 
+# Usage
+```Java
+// 接続する URL のログを表示するかどうか (デフォルトは true)
+RHttpClient.setShowLog(boolean);
+
+// 表示するログに時間を表示するかどうか (デフォルトは true)
+RHttpClient.setShowTime(boolean);
+
+// UserAgent リクエストプロパティを設定 (デフォルトは "Mozilla/5.0")
+RHttpClient.setUserAgent(userAgent);
+
+// 文字エンコーディングの設定 (デフォルトは "UTF-8")
+RHttpClient.setUserAgent(charset);
+
+// 接続
+RHttpClient.raw("https://api.simplyrin.net/hello.txt")
+```
+
 # Maven
 - Repository
 ```XML
