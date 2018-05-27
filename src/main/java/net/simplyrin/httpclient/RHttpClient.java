@@ -5,11 +5,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * Created by SimplyRin on 2018/05/26.
+ *
+ * Version: 1.2-SNAPSHOT
  *
  *  Copyright 2018 SimplyRin
  *
@@ -30,11 +33,10 @@ public class RHttpClient {
 	private static boolean showLog = true;
 	private static boolean showTime = true;
 
-	public static String raw(String url) {
-		return RHttpClient.raw(url, "Mozilla/5.0");
-	}
+	private static String userAgent = "Mozilla/5.0";
+	private static String charset = "UTF-8";
 
-	public static String raw(String link, String userAgent) {
+	public static String raw(String link) {
 		if(showLog) {
 			System.out.println((showTime ? getTimePrefix() + " " : "") + "Connecting to " + link + ".");
 		}
@@ -47,7 +49,7 @@ public class RHttpClient {
 			connection.setReadTimeout(10000);
 			connection.connect();
 			InputStream inputStream = connection.getInputStream();
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, Charset.forName(charset)));
 			String line, output = "";
 			while((line = bufferedReader.readLine()) != null) {
 				output += line + "\n";
@@ -55,7 +57,6 @@ public class RHttpClient {
 			return output;
 		} catch (Exception e) {
 		}
-
 		return null;
 	}
 
@@ -65,6 +66,14 @@ public class RHttpClient {
 
 	public static void setShowTime(boolean showTime) {
 		RHttpClient.showTime = showTime;
+	}
+
+	public static void setUserAgent(String userAgent) {
+		RHttpClient.userAgent = userAgent;
+	}
+
+	public static void setCharset(String charset) {
+		RHttpClient.charset = charset;
 	}
 
 	private static String getTimePrefix() {
