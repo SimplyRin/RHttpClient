@@ -3,6 +3,7 @@ package net.simplyrin.httpclient;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -32,30 +33,57 @@ public class RHttpClient {
 
 	private static boolean showLog = true;
 	private static boolean showTime = true;
+	private static boolean printErrorLog = false;
+
+	private static int connectTimeout = 10000;
+	private static int readTimeout = 10000;
 
 	private static String userAgent = "Mozilla/5.0";
 	private static String charset = "UTF-8";
 
+	@Deprecated
 	public static String raw(String link) {
+		return connect(link);
+	}
+
+	public static String connect(String link) {
+		return connect(link, null);
+	}
+
+	public static String connect(String link, String postText) {
 		if(showLog) {
 			System.out.println((showTime ? getTimePrefix() + " " : "") + "Connecting to " + link + ".");
 		}
 		try {
 			URL url = new URL(link);
 			HttpURLConnection  connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestMethod("GET");
+			if(postText != null) {
+				connection.setRequestMethod("POST");
+			} else {
+				connection.setRequestMethod("GET");
+			}
 			connection.addRequestProperty("User-Agent", userAgent);
-			connection.setConnectTimeout(10000);
-			connection.setReadTimeout(10000);
+			connection.setConnectTimeout(connectTimeout);
+			connection.setReadTimeout(readTimeout);
+			if(postText != null) {
+				connection.setDoOutput(true);
+				OutputStreamWriter outputStreamWriter = new OutputStreamWriter(connection.getOutputStream());
+				outputStreamWriter.write(postText);
+				outputStreamWriter.close();
+			}
 			connection.connect();
 			InputStream inputStream = connection.getInputStream();
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, Charset.forName(charset)));
 			String line, output = "";
 			while((line = bufferedReader.readLine()) != null) {
 				output += line + "\n";
+				output.substring(0, output.length() - 2);
 			}
 			return output;
 		} catch (Exception e) {
+			if(printErrorLog) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
@@ -66,6 +94,18 @@ public class RHttpClient {
 
 	public static void setShowTime(boolean showTime) {
 		RHttpClient.showTime = showTime;
+	}
+
+	public static void setPrintErrorLog(boolean printErrorLog) {
+		RHttpClient.printErrorLog = printErrorLog;
+	}
+
+	public static void setConnectTimeout(int connectTimeout) {
+		RHttpClient.connectTimeout = connectTimeout;
+	}
+
+	public static void setReadTimeout(int readTimeout) {
+		RHttpClient.readTimeout = readTimeout;
 	}
 
 	public static void setUserAgent(String userAgent) {
