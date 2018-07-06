@@ -77,9 +77,8 @@ public class RHttpClient {
 			String line, output = "";
 			while((line = bufferedReader.readLine()) != null) {
 				output += line + "\n";
-				output.substring(0, output.length() - 2);
 			}
-			return output;
+			return output.substring(0, output.length() - 2);
 		} catch (Exception e) {
 			if(printErrorLog) {
 				e.printStackTrace();
